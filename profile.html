@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile - Bookshelf</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="auth.css">
+  <link rel="stylesheet" href="profile.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <div class="container header-container">
+        <a href="index.html" class="logo">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+          </svg>
+          <span>Bookshelf</span>
+        </a>
+        
+        <nav class="main-nav">
+          <a href="index.html" class="nav-link">Books</a>
+          <a href="#" class="nav-link">Lists</a>
+          <a href="#" class="nav-link">Members</a>
+          <a href="#" class="nav-link">Journal</a>
+        </nav>
+        
+        <div class="header-actions">
+          <form class="search-form">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="search" placeholder="Search..." class="search-input">
+          </form>
+          
+          <button class="icon-button search-button-mobile">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </button>
+          
+          <div id="auth-buttons-container">
+            <!-- Will be populated by auth.js -->
+          </div>
+          
+          <button id="theme-toggle" class="icon-button">
+            <svg id="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+            <svg id="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+    
+    <main class="main letterboxd-style">
+      <!-- Profile Header Banner -->
+      <div class="profile-banner">
+        <div class="container">
+          <div class="profile-header-content">
+            <a href="profile-sections.html?section=books" class="profile-avatar-link">
+              <div class="profile-avatar">
+                <span id="profile-initial"></span>
+              </div>
+            </a>
+            <div class="profile-identity">
+              <h1 id="profile-username" class="profile-name"></h1>
+              <div class="profile-meta">
+                <span class="profile-meta-item">Member since <span id="join-date"></span></span>
+                <span class="profile-meta-item" id="profile-location">New York, NY</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Profile Navigation -->
+      <div class="profile-nav">
+        <div class="container">
+          <nav class="profile-nav-links">
+            <a href="profile.html" class="profile-nav-link active">Profile</a>
+            <a href="profile-sections.html?section=books" class="profile-nav-link">Books</a>
+            <a href="profile-sections.html?section=reviews" class="profile-nav-link">Reviews</a>
+            <a href="profile-sections.html?section=lists" class="profile-nav-link">Lists</a>
+            <a href="profile-sections.html?section=favorites" class="profile-nav-link">Favorites</a>
+            <a href="profile-sections.html?section=friends" class="profile-nav-link">Friends</a>
+          </nav>
+          <div class="profile-actions">
+            <button class="button button-outline">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+              Follow
+            </button>
+            <button class="button button-outline">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+              Message
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="container profile-content">
+        <div class="profile-sidebar">
+          <!-- Bio Section -->
+          <div class="profile-bio-card">
+            <div class="profile-bio" id="profile-bio-display">
+              <p>No bio yet. Add one in your settings!</p>
+            </div>
+            <button class="edit-bio-button">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+              </svg>
+            </button>
+          </div>
+          
+          <!-- Stats Section -->
+          <div class="profile-stats-card">
+            <h3 class="sidebar-heading">Stats</h3>
+            <div class="profile-stats">
+              <div class="stat-item">
+                <div class="stat-value" id="books-read-count">0</div>
+                <div class="stat-label">Books</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-value" id="lists-count">0</div>
+                <div class="stat-label">Lists</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-value" id="reviews-count">0</div>
+                <div class="stat-label">Reviews</div>
+              </div>
+            </div>
+            <div class="profile-stats">
+              <div class="stat-item">
+                <div class="stat-value" id="following-count">0</div>
+                <div class="stat-label">Following</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-value" id="followers-count">0</div>
+                <div class="stat-label">Followers</div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Reading Activity -->
+          <div class="reading-activity-card">
+            <h3 class="sidebar-heading">Reading Activity</h3>
+            <div class="reading-chart">
+              <div class="chart-placeholder">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="20" x2="18" y2="10"></line>
+                  <line x1="12" y1="20" x2="12" y2="4"></line>
+                  <line x1="6" y1="20" x2="6" y2="14"></line>
+                </svg>
+                <p>Reading activity will appear here</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Recent Likes -->
+          <div class="recent-likes-card">
+            <h3 class="sidebar-heading">Recent Likes</h3>
+            <div class="likes-placeholder">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+              </svg>
+              <p>Books you've liked will appear here</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="profile-main-content">
+          <!-- Reading Status -->
+          <div class="reading-status-section">
+            <h2 class="section-title">Currently Reading</h2>
+            <div class="book-row" id="currently-reading-books">
+              <!-- Books will be added here by JavaScript -->
+              <div class="empty-state">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                  <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                </svg>
+                <h3>No books currently being read</h3>
+                <button class="button button-primary add-book-button">Add a book</button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Recent Activity -->
+          <div class="recent-activity-section">
+            <h2 class="section-title">Recent Activity</h2>
+            
+            <!-- Activity Feed -->
+            <div class="activity-feed">
+              <!-- Sample Activity Item -->
+              <div class="activity-item">
+                <div class="activity-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                  </svg>
+                </div>
+                <div class="activity-content">
+                  <div class="activity-header">
+                    <span class="activity-action">Started reading</span>
+                    <span class="activity-time">2 days ago</span>
+                  </div>
+                  <div class="activity-book">
+                    <div class="activity-book-cover" style="background-image: url('/placeholder.svg?height=150&width=100');"></div>
+                    <div class="activity-book-info">
+                      <h3 class="activity-book-title">The Great Gatsby</h3>
+                      <p class="activity-book-author">F. Scott Fitzgerald</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Sample Activity Item -->
+              <div class="activity-item">
+                <div class="activity-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <polyline points="10 9 9 9 8 9"></polyline>
+                  </svg>
+                </div>
+                <div class="activity-content">
+                  <div class="activity-header">
+                    <span class="activity-action">Wrote a review</span>
+                    <span class="activity-time">1 week ago</span>
+                  </div>
+                  <div class="activity-book">
+                    <div class="activity-book-cover" style="background-image: url('/placeholder.svg?height=150&width=100');"></div>
+                    <div class="activity-book-info">
+                      <h3 class="activity-book-title">To Kill a Mockingbird</h3>
+                      <p class="activity-book-author">Harper Lee</p>
+                      <div class="activity-rating">
+                        <div class="rating-stars">★★★★☆</div>
+                      </div>
+                      <p class="activity-review-excerpt">
+                        "A timeless classic that explores themes of racial injustice and moral growth through the eyes of a child..."
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Sample Activity Item -->
+              <div class="activity-item">
+                <div class="activity-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="8" y1="6" x2="21" y2="6"></line>
+                    <line x1="8" y1="12" x2="21" y2="12"></line>
+                    <line x1="8" y1="18" x2="21" y2="18"></line>
+                    <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                    <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                    <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                  </svg>
+                </div>
+                <div class="activity-content">
+                  <div class="activity-header">
+                    <span class="activity-action">Created a list</span>
+                    <span class="activity-time">2 weeks ago</span>
+                  </div>
+                  <div class="activity-list">
+                    <h3 class="activity-list-title">Summer Reading Recommendations</h3>
+                    <p class="activity-list-description">
+                      My favorite books to read during summer vacation.
+                    </p>
+                    <div class="activity-list-covers">
+                      <div class="list-book-cover" style="background-image: url('/placeholder.svg?height=150&width=100');"></div>
+                      <div class="list-book-cover" style="background-image: url('/placeholder.svg?height=150&width=100');"></div>
+                      <div class="list-book-cover" style="background-image: url('/placeholder.svg?height=150&width=100');"></div>
+                      <div class="list-book-cover-more">+2</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Popular Reviews -->
+          <div class="popular-reviews-section">
+            <h2 class="section-title">Popular Reviews</h2>
+            <div class="reviews-grid">
+              <!-- Sample Review -->
+              <div class="review-card">
+                <div class="review-book">
+                  <div class="review-book-cover" style="background-image: url('/placeholder.svg?height=150&width=100');"></div>
+                  <div class="review-book-info">
+                    <h3 class="review-book-title">1984</h3>
+                    <p class="review-book-author">George Orwell</p>
+                    <div class="review-rating">
+                      <div class="rating-stars">★★★★★</div>
+                      <span class="review-date">June 12, 2023</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="review-content">
+                  <p>
+                    Orwell's dystopian masterpiece remains as relevant today as when it was written. The exploration of surveillance, propaganda, and totalitarianism is chillingly prescient.
+                  </p>
+                </div>
+                <div class="review-footer">
+                  <div class="review-likes">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
+                    </svg>
+                    <span>24 likes</span>
+                  </div>
+                  <div class="review-comments">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                    </svg>
+                    <span>8 comments</span>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Sample Review -->
+              <div class="review-card">
+                <div class="review-book">
+                  <div class="review-book-cover" style="background-image: url('/placeholder.svg?height=150&width=100');"></div>
+                  <div class="review-book-info">
+                    <h3 class="review-book-title">Pride and Prejudice</h3>
+                    <p class="review-book-author">Jane Austen</p>
+                    <div class="review-rating">
+                      <div class="rating-stars">★★★★☆</div>
+                      <span class="review-date">May 3, 2023</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="review-content">
+                  <p>
+                    Austen's wit and social commentary shine in this beloved classic. Elizabeth Bennet remains one of literature's most endearing and relatable heroines.
+                  </p>
+                </div>
+                <div class="review-footer">
+                  <div class="review-likes">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
+                    </svg>
+                    <span>18 likes</span>
+                  </div>
+                  <div class="review-comments">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                    </svg>
+                    <span>5 comments</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="section-footer">
+              <a href="#" class="view-all-link">View all reviews</a>
+            </div>
+          </div>
+          
+          <!-- Favorite Books -->
+          <div class="favorite-books-section">
+            <h2 class="section-title">Favorite Books</h2>
+            <div class="favorites-grid">
+              <!-- Sample Favorite -->
+              <div class="favorite-book">
+                <div class="favorite-book-cover" style="background-image: url('/placeholder.svg?height=150&width=100');"></div>
+                <div class="favorite-book-info">
+                  <h3 class="favorite-book-title">The Hobbit</h3>
+                  <p class="favorite-book-author">J.R.R. Tolkien</p>
+                </div>
+              </div>
+              
+              <!-- Sample Favorite -->
+              <div class="favorite-book">
+                <div class="favorite-book-cover" style="background-image: url('/placeholder.svg?height=150&width=100');"></div>
+                <div class="favorite-book-info">
+                  <h3 class="favorite-book-title">Dune</h3>
+                  <p class="favorite-book-author">Frank Herbert</p>
+                </div>
+              </div>
+              
+              <!-- Sample Favorite -->
+              <div class="favorite-book">
+                <div class="favorite-book-cover" style="background-image: url('/placeholder.svg?height=150&width=100');"></div>
+                <div class="favorite-book-info">
+                  <h3 class="favorite-book-title">The Alchemist</h3>
+                  <p class="favorite-book-author">Paulo Coelho</p>
+                </div>
+              </div>
+              
+              <!-- Sample Favorite -->
+              <div class="favorite-book">
+                <div class="favorite-book-cover" style="background-image: url('/placeholder.svg?height=150&width=100');"></div>
+                <div class="favorite-book-info">
+                  <h3 class="favorite-book-title">The Road</h3>
+                  <p class="favorite-book-author">Cormac McCarthy</p>
+                </div>
+              </div>
+            </div>
+            <div class="section-footer">
+              <a href="#" class="view-all-link">View all favorites</a>
+            </div>
+          </div>
+          
+          <!-- Lists -->
+          <div class="lists-section">
+            <h2 class="section-title">Lists</h2>
+            <div class="lists-grid">
+              <!-- Sample List -->
+              <div class="list-card">
+                <div class="list-header">
+                  <h3 class="list-title">Science Fiction Essentials</h3>
+                  <span class="list-count">8 books</span>
+                </div>
+                <div class="list-preview">
+                  <div class="list-book-cover" style="background-image: url('/placeholder.svg?height=150&width=100');"></div>
+                  <div class="list-book-cover" style="background-image: url('/placeholder.svg?height=150&width=100');"></div>
+                  <div class="list-book-cover" style="background-image: url('/placeholder.svg?height=150&width=100');"></div>
+                  <div class="list-book-cover-more">+5</div>
+                </div>
+                <div class="list-footer">
+                  <span class="list-date">Created on Mar 15, 2023</span>
+                  <span class="list-likes">12 likes</span>
+                </div>
+              </div>
+              
+              <!-- Sample List -->
+              <div class="list-card">
+                <div class="list-header">
+                  <h3 class="list-title">Classic Literature</h3>
+                  <span class="list-count">12 books</span>
+                </div>
+                <div class="list-preview">
+                  <div class="list-book-cover" style="background-image: url('/placeholder.svg?height=150&width=100');"></div>
+                  <div class="list-book-cover" style="background-image: url('/placeholder.svg?height=150&width=100');"></div>
+                  <div class="list-book-cover" style="background-image: url('/placeholder.svg?height=150&width=100');"></div>
+                  <div class="list-book-cover-more">+9</div>
+                </div>
+                <div class="list-footer">
+                  <span class="list-date">Created on Feb 8, 2023</span>
+                  <span class="list-likes">8 likes</span>
+                </div>
+              </div>
+            </div>
+            <div class="section-footer">
+              <a href="#" class="view-all-link">View all lists</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-bottom">
+          <div class="footer-copyright">
+            © 2025 Bookshelf. All rights reserved
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+  
+  <script src="script.js"></script>
+  <script src="auth.js"></script>
+  <script src="profile.js"></script>
+</body>
+</html>
+
