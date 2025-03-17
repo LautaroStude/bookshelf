@@ -15,25 +15,15 @@ class User {
   }
 }
 
-// Auth controller
+// Auth controller - simplified for reliability
 const AuthController = {
   // Check if user is logged in
   isAuthenticated() {
-    try {
-      const userData = localStorage.getItem("currentUser")
-      if (userData) {
-        // Set a flag in localStorage to make it easier to check login status
-        localStorage.setItem("isLoggedIn", "true")
-        return { isLoggedIn: true, user: JSON.parse(userData) }
-      } else {
-        localStorage.removeItem("isLoggedIn")
-        return { isLoggedIn: false, user: null }
-      }
-    } catch (error) {
-      console.error("Error checking authentication:", error)
-      localStorage.removeItem("isLoggedIn")
-      return { isLoggedIn: false, user: null }
+    const userData = localStorage.getItem("currentUser")
+    if (userData) {
+      return { isLoggedIn: true, user: JSON.parse(userData) }
     }
+    return { isLoggedIn: false, user: null }
   },
 
   // Register a new user
@@ -61,6 +51,7 @@ const AuthController = {
 
       // Log user in
       localStorage.setItem("currentUser", JSON.stringify(newUser))
+      localStorage.setItem("isLoggedIn", "true")
 
       return { success: true, user: newUser }
     } catch (error) {
@@ -72,33 +63,23 @@ const AuthController = {
   // Login user
   login(username, password) {
     try {
-      // For debugging
-      console.log("Attempting login with:", username)
-      console.log("Current users in storage:", localStorage.getItem("users"))
-
       const users = JSON.parse(localStorage.getItem("users") || "[]")
 
-      // Log the users for debugging
-      console.log("Parsed users:", users)
-
-      // First try exact match
-      let user = users.find((u) => u.username === username && u.password === password)
-
-      if (!user) {
-        // If no exact match, try case-insensitive username match
-        user = users.find((u) => u.username.toLowerCase() === username.toLowerCase() && u.password === password)
-      }
+      // Find user with matching credentials
+      const user = users.find(
+        (u) =>
+          (u.username === username || u.username.toLowerCase() === username.toLowerCase()) && u.password === password,
+      )
 
       if (!user) {
-        // For debugging, show what users we have
-        console.log("No matching user found. Available users:")
-        users.forEach((u) => console.log(`Username: ${u.username}`))
-
         return { success: false, message: "Invalid username or password" }
       }
 
-      console.log("Login successful for user:", user.username)
+      // Store user data in localStorage
       localStorage.setItem("currentUser", JSON.stringify(user))
+      localStorage.setItem("isLoggedIn", "true")
+
+      console.log("Login successful:", user.username)
       return { success: true, user }
     } catch (error) {
       console.error("Error during login:", error)
@@ -108,13 +89,9 @@ const AuthController = {
 
   // Logout user
   logout() {
-    try {
-      localStorage.removeItem("currentUser")
-      return { success: true }
-    } catch (error) {
-      console.error("Error during logout:", error)
-      return { success: false, message: "Logout failed" }
-    }
+    localStorage.removeItem("currentUser")
+    localStorage.removeItem("isLoggedIn")
+    return { success: true }
   },
 
   // Update user profile
@@ -146,41 +123,42 @@ const AuthController = {
 
   // Debug helper
   debug() {
-    try {
-      const users = JSON.parse(localStorage.getItem("users") || "[]")
-      const currentUser = JSON.parse(localStorage.getItem("currentUser") || "null")
+    const users = JSON.parse(localStorage.getItem("users") || "[]")
+    const currentUser = JSON.parse(localStorage.getItem("currentUser") || "null")
+    const isLoggedIn = localStorage.getItem("isLoggedIn")
 
-      console.log("=== DEBUG INFO ===")
-      console.log("Registered Users:", users)
-      console.log("Current User:", currentUser)
-      console.log("=================")
+    console.log("=== DEBUG INFO ===")
+    console.log("Registered Users:", users)
+    console.log("Current User:", currentUser)
+    console.log("isLoggedIn flag:", isLoggedIn)
+    console.log("=================")
 
-      return { users, currentUser }
-    } catch (error) {
-      console.error("Error in debug:", error)
-      return { error: "Error retrieving debug info" }
-    }
+    return { users, currentUser, isLoggedIn }
   },
 }
 
-// UI Controller
+// UI Controller - simplified for reliability
 const UIController = {
   // Update header based on authentication status
   updateHeader() {
-    const { isLoggedIn, user } = AuthController.isAuthenticated()
-    const authContainer = document.getElementById("auth-buttons-container")
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"))
+    const isLoggedIn = localStorage.getItem("isLoggedIn") === "true"
 
+    console.log("UpdateHeader - Login status:", isLoggedIn)
+    console.log("UpdateHeader - Current user:", currentUser)
+
+    const authContainer = document.getElementById("auth-buttons-container")
     if (!authContainer) return
 
-    if (isLoggedIn && user) {
+    if (isLoggedIn && currentUser) {
       // User is logged in, show user menu
       authContainer.innerHTML = `
         <div class="user-menu">
           <button id="user-menu-button" class="user-menu-button">
             <div class="user-avatar">
-              <span>${user.username.charAt(0).toUpperCase()}</span>
+              <span>${currentUser.username.charAt(0).toUpperCase()}</span>
             </div>
-            <span class="username-display">${user.username}</span>
+            <span class="username-display">${currentUser.username}</span>
           </button>
           <div id="user-dropdown" class="user-dropdown hidden">
             <a href="profile.html" class="dropdown-item" id="profile-link">
@@ -190,18 +168,12 @@ const UIController = {
               </svg>
               <span>My Profile</span>
             </a>
-            <a href="#" class="dropdown-item">
+            <a href="profile-sections.html?section=books" class="dropdown-item">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
               </svg>
               <span>My Books</span>
-            </a>
-            <a href="#" class="dropdown-item">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="3"></circle>
-                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-              </svg>
-              <span>Settings</span>
             </a>
             <div class="dropdown-divider"></div>
             <a href="#" id="logout-button" class="dropdown-item">
@@ -293,8 +265,16 @@ const UIController = {
 
       if (result.success) {
         this.showMessage(messageEl, "Login successful! Redirecting...", "success")
+
+        // Update the header immediately after successful login
+        this.updateHeader()
+
+        // Get redirect URL from query parameters if it exists
+        const urlParams = new URLSearchParams(window.location.search)
+        const redirectUrl = urlParams.get("redirect") || "index.html"
+
         setTimeout(() => {
-          window.location.href = "index.html"
+          window.location.href = redirectUrl
         }, 1500)
       } else {
         this.showMessage(messageEl, result.message, "error")
@@ -424,8 +404,17 @@ const UIController = {
 
 // Initialize everything when DOM is loaded
 document.addEventListener("DOMContentLoaded", () => {
-  // Check if route is protected
-  UIController.checkProtectedRoute()
+  console.log("DOM Loaded - Auth.js initializing")
+
+  // Force clear any existing auth data if needed (uncomment to reset)
+  // localStorage.removeItem("currentUser");
+  // localStorage.removeItem("isLoggedIn");
+
+  // Debug current auth state
+  console.log("Current auth state:", {
+    isLoggedIn: localStorage.getItem("isLoggedIn"),
+    currentUser: localStorage.getItem("currentUser"),
+  })
 
   // Update header based on auth status
   UIController.updateHeader()
@@ -437,23 +426,16 @@ document.addEventListener("DOMContentLoaded", () => {
   // Initialize profile page if on profile page
   UIController.initProfilePage()
 
-  // Make all auth-related buttons functional
-  const loginButtons = document.querySelectorAll('a[href="/login.html"]')
-  const registerButtons = document.querySelectorAll('a[href="/register.html"]')
+  // Debug login status
+  console.log("DOM Loaded - Login status:", localStorage.getItem("isLoggedIn"))
+  console.log("DOM Loaded - Current user:", localStorage.getItem("currentUser"))
 
-  loginButtons.forEach((button) => {
-    button.addEventListener("click", (e) => {
-      e.preventDefault()
-      window.location.href = "/login.html"
-    })
-  })
-
-  registerButtons.forEach((button) => {
-    button.addEventListener("click", (e) => {
-      e.preventDefault()
-      window.location.href = "/register.html"
-    })
-  })
+  // Create a test user if none exists
+  if (JSON.parse(localStorage.getItem("users") || "[]").length === 0) {
+    console.log("Creating test user...")
+    AuthController.register("test", "test@example.com", "password")
+    console.log("Test user created. Username: test, Password: password")
+  }
 
   // Add debug button for testing
   const debugButton = document.createElement("button")
@@ -478,18 +460,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.body.appendChild(debugButton)
 
-  // Create a test user if none exists
-  if (JSON.parse(localStorage.getItem("users") || "[]").length === 0) {
-    console.log("Creating test user...")
-    AuthController.register("test", "test@example.com", "password")
-    console.log("Test user created. Username: test, Password: password")
-  }
-
   // Make profile link work correctly
   document.addEventListener("click", (e) => {
     if (e.target && (e.target.id === "profile-link" || e.target.closest("#profile-link"))) {
       e.preventDefault()
-      const { isLoggedIn } = AuthController.isAuthenticated()
+      const isLoggedIn = localStorage.getItem("isLoggedIn") === "true"
       if (isLoggedIn) {
         window.location.href = "profile.html"
       } else {
@@ -498,5 +473,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   })
 })
+
 
 
