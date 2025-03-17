@@ -4,22 +4,17 @@
 
 // Profile page functionality
 document.addEventListener("DOMContentLoaded", () => {
-  // Check if user is logged in
-  // const { isLoggedIn, user } = AuthController.isAuthenticated();
-  // const isLoggedIn = localStorage.getItem("isLoggedIn")
-  // const user = JSON.parse(localStorage.getItem("user"))
+  console.log("Profile.js loaded")
 
-  // if (!isLoggedIn) {
-  //   // And update:
-  //   // window.location.href = '/login.html';
-  //   window.location.href = "login.html"
-  //   return
-  // }
   // Check if user is logged in
-  const isLoggedIn = localStorage.getItem("isLoggedIn")
-  const user = JSON.parse(localStorage.getItem("user"))
+  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true"
+  const currentUser = JSON.parse(localStorage.getItem("currentUser"))
 
-  if (!isLoggedIn || !user) {
+  console.log("Profile.js - Login status:", isLoggedIn)
+  console.log("Profile.js - Current user:", currentUser)
+
+  if (!isLoggedIn || !currentUser) {
+    console.log("Not logged in, redirecting to login page")
     window.location.href = "login.html?redirect=profile.html"
     return
   }
@@ -29,11 +24,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const profilePictureInitial = document.getElementById("profile-picture-initial")
 
   if (profileInitial) {
-    profileInitial.textContent = user.username.charAt(0).toUpperCase()
+    profileInitial.textContent = currentUser.username.charAt(0).toUpperCase()
   }
 
   if (profilePictureInitial) {
-    profilePictureInitial.textContent = user.username.charAt(0).toUpperCase()
+    profilePictureInitial.textContent = currentUser.username.charAt(0).toUpperCase()
   }
 
   // Update profile information
@@ -44,13 +39,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const booksReadingEl = document.getElementById("currently-reading-count")
   const booksWantToReadEl = document.getElementById("want-to-read-count")
   const friendsCountEl = document.getElementById("friends-count")
+  const listsCountEl = document.getElementById("lists-count")
+  const reviewsCountEl = document.getElementById("reviews-count")
+  const followingCountEl = document.getElementById("following-count")
+  const followersCountEl = document.getElementById("followers-count")
   const bioDisplayEl = document.getElementById("profile-bio-display")
 
-  if (usernameEl) usernameEl.textContent = user.username
-  if (emailEl) emailEl.textContent = user.email
+  if (usernameEl) usernameEl.textContent = currentUser.username
+  if (emailEl) emailEl.textContent = currentUser.email
 
   if (joinDateEl) {
-    const joinDate = new Date(user.createdAt)
+    const joinDate = new Date(currentUser.createdAt)
     joinDateEl.textContent = joinDate.toLocaleDateString("en-US", {
       year: "numeric",
       month: "long",
@@ -58,14 +57,20 @@ document.addEventListener("DOMContentLoaded", () => {
     })
   }
 
-  if (booksReadEl) booksReadEl.textContent = user.booksRead ? user.booksRead.length : 0
-  if (booksReadingEl) booksReadingEl.textContent = user.booksReading ? user.booksReading.length : 0
-  if (booksWantToReadEl) booksWantToReadEl.textContent = user.booksWantToRead ? user.booksWantToRead.length : 0
-  if (friendsCountEl) friendsCountEl.textContent = user.friends ? user.friends.length : 0
+  // Set counts with default values if not available
+  if (booksReadEl) booksReadEl.textContent = currentUser.booksRead ? currentUser.booksRead.length : 0
+  if (booksReadingEl) booksReadingEl.textContent = currentUser.booksReading ? currentUser.booksReading.length : 0
+  if (booksWantToReadEl)
+    booksWantToReadEl.textContent = currentUser.booksWantToRead ? currentUser.booksWantToRead.length : 0
+  if (friendsCountEl) friendsCountEl.textContent = currentUser.friends ? currentUser.friends.length : 0
+  if (listsCountEl) listsCountEl.textContent = currentUser.lists ? currentUser.lists.length : 0
+  if (reviewsCountEl) reviewsCountEl.textContent = currentUser.reviews ? currentUser.reviews.length : 0
+  if (followingCountEl) followingCountEl.textContent = currentUser.following ? currentUser.following.length : 0
+  if (followersCountEl) followersCountEl.textContent = currentUser.followers ? currentUser.followers.length : 0
 
   // Display bio if available
-  if (bioDisplayEl && user.bio) {
-    bioDisplayEl.innerHTML = `<p>${user.bio}</p>`
+  if (bioDisplayEl && currentUser.bio) {
+    bioDisplayEl.innerHTML = `<p>${currentUser.bio}</p>`
   }
 
   // Initialize profile form
@@ -76,11 +81,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (profileForm && usernameInput && emailInput) {
     // Set initial values
-    usernameInput.value = user.username
-    emailInput.value = user.email
+    usernameInput.value = currentUser.username
+    emailInput.value = currentUser.email
 
-    if (bioInput && user.bio) {
-      bioInput.value = user.bio
+    if (bioInput && currentUser.bio) {
+      bioInput.value = currentUser.bio
     }
 
     // Handle form submission
@@ -90,7 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const updatedData = {
         username: usernameInput.value.trim(),
         email: emailInput.value.trim(),
-        bio: bioInput ? bioInput.value.trim() : user.bio,
+        bio: bioInput ? bioInput.value.trim() : currentUser.bio,
       }
 
       // Validate data
@@ -114,12 +119,12 @@ document.addEventListener("DOMContentLoaded", () => {
       // Update profile
       // const result = AuthController.updateProfile(updatedData);
       const storedUsers = JSON.parse(localStorage.getItem("users")) || []
-      const userIndex = storedUsers.findIndex((u) => u.email === user.email)
+      const userIndex = storedUsers.findIndex((u) => u.email === currentUser.email)
 
       if (userIndex !== -1) {
         storedUsers[userIndex] = { ...storedUsers[userIndex], ...updatedData }
         localStorage.setItem("users", JSON.stringify(storedUsers))
-        localStorage.setItem("user", JSON.stringify(storedUsers[userIndex]))
+        localStorage.setItem("currentUser", JSON.stringify(storedUsers[userIndex]))
         alert("Profile updated successfully")
         window.location.reload()
       } else {
@@ -187,24 +192,29 @@ document.addEventListener("DOMContentLoaded", () => {
 })
 // Profile page functionality
 document.addEventListener("DOMContentLoaded", () => {
-  // Check if user is logged in
-  const isLoggedIn = localStorage.getItem("isLoggedIn")
-  const user = JSON.parse(localStorage.getItem("user"))
+  console.log("Profile.js loaded")
 
-  if (!isLoggedIn) {
-    window.location.href = "login.html"
+  // Check if user is logged in
+  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true"
+  const currentUser = JSON.parse(localStorage.getItem("currentUser"))
+
+  console.log("Profile.js - Login status:", isLoggedIn)
+  console.log("Profile.js - Current user:", currentUser)
+
+  if (!isLoggedIn || !currentUser) {
+    console.log("Not logged in, redirecting to login page")
+    window.location.href = "login.html?redirect=profile.html"
     return
   }
 
   // Set profile initial
   const profileInitial = document.getElementById("profile-initial")
   if (profileInitial) {
-    profileInitial.textContent = user.username.charAt(0).toUpperCase()
+    profileInitial.textContent = currentUser.username.charAt(0).toUpperCase()
   }
 
   // Update profile information
   const usernameEl = document.getElementById("profile-username")
-  const emailEl = document.getElementById("profile-email")
   const joinDateEl = document.getElementById("join-date")
   const booksReadEl = document.getElementById("books-read-count")
   const listsCountEl = document.getElementById("lists-count")
@@ -213,10 +223,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const followersCountEl = document.getElementById("followers-count")
   const bioDisplayEl = document.getElementById("profile-bio-display")
 
-  if (usernameEl) usernameEl.textContent = user.username
+  if (usernameEl) usernameEl.textContent = currentUser.username
 
   if (joinDateEl) {
-    const joinDate = new Date(user.createdAt)
+    const joinDate = new Date(currentUser.createdAt)
     joinDateEl.textContent = joinDate.toLocaleDateString("en-US", {
       year: "numeric",
       month: "long",
@@ -225,15 +235,15 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Set counts with default values if not available
-  if (booksReadEl) booksReadEl.textContent = user.booksRead ? user.booksRead.length : 0
-  if (listsCountEl) listsCountEl.textContent = user.lists ? user.lists.length : 0
-  if (reviewsCountEl) reviewsCountEl.textContent = user.reviews ? user.reviews.length : 0
-  if (followingCountEl) followingCountEl.textContent = user.following ? user.following.length : 0
-  if (followersCountEl) followersCountEl.textContent = user.followers ? user.followers.length : 0
+  if (booksReadEl) booksReadEl.textContent = currentUser.booksRead ? currentUser.booksRead.length : 0
+  if (listsCountEl) listsCountEl.textContent = currentUser.lists ? currentUser.lists.length : 0
+  if (reviewsCountEl) reviewsCountEl.textContent = currentUser.reviews ? currentUser.reviews.length : 0
+  if (followingCountEl) followingCountEl.textContent = currentUser.following ? currentUser.following.length : 0
+  if (followersCountEl) followersCountEl.textContent = currentUser.followers ? currentUser.followers.length : 0
 
   // Display bio if available
-  if (bioDisplayEl && user.bio) {
-    bioDisplayEl.innerHTML = `<p>${user.bio}</p>`
+  if (bioDisplayEl && currentUser.bio) {
+    bioDisplayEl.innerHTML = `<p>${currentUser.bio}</p>`
   }
 
   // Handle profile navigation
@@ -241,6 +251,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   profileNavLinks.forEach((link) => {
     link.addEventListener("click", (e) => {
+      if (link.classList.contains("active") || link.getAttribute("href") === "profile.html") {
+        return // Allow normal navigation for the profile link and already active links
+      }
+
       e.preventDefault()
 
       // Remove active class from all links
@@ -251,8 +265,12 @@ document.addEventListener("DOMContentLoaded", () => {
       // Add active class to clicked link
       link.classList.add("active")
 
-      // Show a message that this feature is coming soon
-      if (link.getAttribute("href") !== "#profile") {
+      // If it's a section link, navigate to it
+      const href = link.getAttribute("href")
+      if (href && href.startsWith("profile-sections.html")) {
+        window.location.href = href
+      } else {
+        // Otherwise show a message that this feature is coming soon
         alert("This section is coming soon!")
       }
     })
@@ -263,20 +281,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (editBioButton) {
     editBioButton.addEventListener("click", () => {
-      const currentBio = user.bio || ""
+      const currentBio = currentUser.bio || ""
       const newBio = prompt("Edit your bio:", currentBio)
 
       if (newBio !== null) {
         // Update bio in localStorage
-        const storedUsers = JSON.parse(localStorage.getItem("users")) || []
-        const userIndex = storedUsers.findIndex((u) => u.email === user.email)
+        const storedUsers = JSON.parse(localStorage.getItem("users") || "[]")
+        const userIndex = storedUsers.findIndex((u) => u.id === currentUser.id)
 
         if (userIndex !== -1) {
           storedUsers[userIndex].bio = newBio
-          user.bio = newBio
+          currentUser.bio = newBio
 
           localStorage.setItem("users", JSON.stringify(storedUsers))
-          localStorage.setItem("user", JSON.stringify(user))
+          localStorage.setItem("currentUser", JSON.stringify(currentUser))
 
           // Update bio display
           if (bioDisplayEl) {
@@ -324,5 +342,6 @@ document.addEventListener("DOMContentLoaded", () => {
     })
   })
 })
+
 
 
