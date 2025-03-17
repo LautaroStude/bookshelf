@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book Lists - Bookshelf</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="auth.css">
+<link rel="stylesheet" href="lists.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="app">
+  <header class="header">
+    <div class="container header-container">
+      <a href="index.html" class="logo">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+          <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+        </svg>
+        <span>Bookshelf</span>
+      </a>
+      
+      <nav class="main-nav">
+        <a href="index.html" class="nav-link">Books</a>
+        <a href="lists.html" class="nav-link active">Lists</a>
+        <a href="#" class="nav-link">Members</a>
+        <a href="#" class="nav-link">Journal</a>
+      </nav>
+      
+      <div class="header-actions">
+        <form class="search-form">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="search" placeholder="Search lists..." class="search-input">
+        </form>
+        
+        <button class="icon-button search-button-mobile">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </button>
+        
+        <div id="auth-buttons-container">
+          <!-- Will be populated by auth.js -->
+        </div>
+        
+        <button id="theme-toggle" class="icon-button">
+          <svg id="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+          <svg id="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+  
+  <main class="main">
+    <div class="lists-hero">
+      <div class="container">
+        <h1 class="lists-title">Book Lists</h1>
+        <p class="lists-subtitle">Discover curated collections from the Bookshelf community</p>
+      </div>
+    </div>
+    
+    <div class="container lists-container">
+      <div class="lists-sidebar">
+        <div class="lists-filters">
+          <h3 class="filter-heading">Categories</h3>
+          <div class="filter-options">
+            <label class="filter-option">
+              <input type="checkbox" checked data-category="all"> All Categories
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" data-category="fiction"> Fiction
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" data-category="non-fiction"> Non-Fiction
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" data-category="science-fiction"> Science Fiction
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" data-category="fantasy"> Fantasy
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" data-category="mystery"> Mystery
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" data-category="biography"> Biography
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" data-category="history"> History
+            </label>
+          </div>
+          
+          <h3 class="filter-heading">Sort By</h3>
+          <div class="filter-options">
+            <label class="filter-option">
+              <input type="radio" name="sort" value="popular" checked> Most Popular
+            </label>
+            <label class="filter-option">
+              <input type="radio" name="sort" value="recent"> Recently Added
+            </label>
+            <label class="filter-option">
+              <input type="radio" name="sort" value="books"> Most Books
+            </label>
+          </div>
+        </div>
+        
+        <div class="create-list-sidebar">
+          <h3>Create Your Own List</h3>
+          <p>Share your favorite books with the community</p>
+          <button id="create-list-button" class="button button-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            Create a List
+          </button>
+        </div>
+      </div>
+      
+      <div class="lists-main">
+        <div class="lists-header">
+          <h2>All Lists</h2>
+          <div class="lists-view-options">
+            <button class="view-option active" data-view="grid">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="7" height="7"></rect>
+                <rect x="14" y="3" width="7" height="7"></rect>
+                <rect x="14" y="14" width="7" height="7"></rect>
+                <rect x="3" y="14" width="7" height="7"></rect>
+              </svg>
+            </button>
+            <button class="view-option" data-view="list">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="8" y1="6" x2="21" y2="6"></line>
+                <line x1="8" y1="12" x2="21" y2="12"></line>
+                <line x1="8" y1="18" x2="21" y2="18"></line>
+                <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                <line x1="3" y1="18" x2="3.01" y2="18"></line>
+              </svg>
+            </button>
+          </div>
+        </div>
+        
+        <div id="lists-loading" class="lists-loading">
+          <div class="spinner"></div>
+          <p>Loading lists...</p>
+        </div>
+        
+        <div id="lists-grid" class="lists-grid">
+          <!-- Lists will be loaded here by JavaScript -->
+        </div>
+        
+        <div id="no-lists" class="no-lists" style="display: none;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="8" y1="6" x2="21" y2="6"></line>
+            <line x1="8" y1="12" x2="21" y2="12"></line>
+            <line x1="8" y1="18" x2="21" y2="18"></line>
+            <line x1="3" y1="6" x2="3.01" y2="6"></line>
+            <line x1="3" y1="12" x2="3.01" y2="12"></line>
+            <line x1="3" y1="18" x2="3.01" y2="18"></line>
+          </svg>
+          <h3>No Lists Found</h3>
+          <p>Be the first to create a list!</p>
+          <button class="button button-primary create-list-button">Create a List</button>
+        </div>
+        
+        <div class="pagination">
+          <button class="pagination-button" disabled>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+            Previous
+          </button>
+          <div class="pagination-pages">
+            <button class="pagination-page active">1</button>
+            <button class="pagination-page">2</button>
+            <button class="pagination-page">3</button>
+            <span class="pagination-ellipsis">...</span>
+            <button class="pagination-page">10</button>
+          </div>
+          <button class="pagination-button">
+            Next
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+  
+  <!-- Create List Modal -->
+  <div id="create-list-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Create a New List</h2>
+        <button class="close-modal">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="create-list-form">
+          <div class="form-group">
+            <label for="list-title" class="form-label">List Title</label>
+            <input type="text" id="list-title" class="form-input" placeholder="Enter a title for your list" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="list-description" class="form-label">Description</label>
+            <textarea id="list-description" class="form-textarea" placeholder="Describe what this list is about" required></textarea>
+          </div>
+          
+          <div class="form-group">
+            <label for="list-category" class="form-label">Category</label>
+            <select id="list-category" class="form-input" required>
+              <option value="">Select a category</option>
+              <option value="fiction">Fiction</option>
+              <option value="non-fiction">Non-Fiction</option>
+              <option value="science-fiction">Science Fiction</option>
+              <option value="fantasy">Fantasy</option>
+              <option value="mystery">Mystery</option>
+              <option value="biography">Biography</option>
+              <option value="history">History</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Privacy</label>
+            <div class="radio-options">
+              <label class="radio-option">
+                <input type="radio" name="privacy" value="public" checked> Public
+                <span class="radio-description">Anyone can see this list</span>
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="privacy" value="private"> Private
+                <span class="radio-description">Only you can see this list</span>
+              </label>
+            </div>
+          </div>
+          
+          <div class="modal-footer">
+            <button type="button" class="button button-outline cancel-modal">Cancel</button>
+            <button type="submit" class="button button-primary">Create List</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div class="footer-copyright">
+          © 2025 Bookshelf. All rights reserved
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script src="script.js"></script>
+<script src="auth.js"></script>
+<script src="lists.js"></script>
+</body>
+</html>
